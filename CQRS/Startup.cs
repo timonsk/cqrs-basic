@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace CQRS
 {
@@ -51,8 +50,14 @@ namespace CQRS
 
         private void RegisterDependencies(IServiceCollection services)
         {
-            services.AddScoped<ICreateProductHandler, CreateProductHandler>();
-            services.AddScoped<IGetProductByIdHandler, GetProductByIdHandler>();
+            // Register product handlers
+            services.AddScoped<IProductCommandHandler, ProductCommandHandler>();
+            services.AddScoped<IProductQueryHandler, ProductQueryHandler>();
+
+            // Register category handlers
+            services.AddScoped<ICategoryCommandHandler, CategoryCommandHandler>();
+            services.AddScoped<ICategoryQueryHandler, CategoryQueryHandler>();
+
             services.AddSingleton<IInMemoryStorage, InMemoryStorage>();
         }
     }

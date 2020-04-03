@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Interfaces.Storage;
 
@@ -15,6 +16,13 @@ namespace CQRS.Storage
                 return Task.FromResult((T)Activator.CreateInstance(typeof(T)));
             }
             return Task.FromResult((T)_storage[id]);
+        }
+
+        public Task<IList<T>> GetAll<T>() where T: class
+        {
+            return Task.FromResult(_storage.Keys.Any() 
+                ?  _storage.Values.Where(v => v as T != null).Select( v => v as T).ToList() 
+                : (IList<T>)Activator.CreateInstance(typeof(IList<T>)));
         }
 
         public Task Save<T>(T data, bool upsert)

@@ -16,30 +16,32 @@ namespace CQRS.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;
-        private readonly ICreateProductHandler _createProductHandler;
-        public readonly IGetProductByIdHandler _getProductByIdHandler;
+        private readonly IProductCommandHandler _productCommandHandler;
+        public readonly IProductQueryHandler _productQueryHandler;
 
         public ProductController(
             ILogger<ProductController> logger,
-            ICreateProductHandler createProductHandler,
-            IGetProductByIdHandler getProductByIdHandler
+            IProductCommandHandler productCommandHandler,
+            IProductQueryHandler productQueryHandler
             )
         {
             _logger = logger;
-            _createProductHandler = createProductHandler;
-            _getProductByIdHandler = getProductByIdHandler;
+            _productCommandHandler = productCommandHandler;
+            _productQueryHandler = productQueryHandler;
         }
 
         [HttpGet]
         public Task<GetProductByIdResponseModel> Get([FromQuery] Guid id)
         {
-            return _getProductByIdHandler.GetProductById(new GetProductByIdRequestModel { ProductId = id });
+            _logger.LogDebug($"Got request for getting product by id: {id}");
+            return _productQueryHandler.GetProductById(new GetProductByIdRequestModel { ProductId = id });
         }
 
         [HttpPost]
         public Task<CreateProductResponseModel> Create([FromBody] CreateProductRequestModel productRequestModel)
         {
-            return _createProductHandler.CreateProduct(productRequestModel);
+            _logger.LogDebug($"Got request for creating product with name: {productRequestModel?.Name} and category id: {productRequestModel?.CategoryId}");
+            return _productCommandHandler.CreateProduct(productRequestModel);
         }
     }
 }

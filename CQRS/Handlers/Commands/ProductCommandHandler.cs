@@ -8,13 +8,13 @@ using CQRS.Models.Stoarage;
 
 namespace CQRS.Handlers.Commands
 {
-    public class CreateProductHandler : ICreateProductHandler
+    public class ProductCommandHandler : IProductCommandHandler
     {
         private readonly IInMemoryStorage _inMemoryStorage;
 
-        public CreateProductHandler(IInMemoryStorage inMemoryStorage)
+        public ProductCommandHandler(IInMemoryStorage inMemoryStorage)
         {
-            _inMemoryStorage = inMemoryStorage;
+            _inMemoryStorage = inMemoryStorage != null ? inMemoryStorage : throw new ArgumentNullException(nameof(inMemoryStorage));
         }
 
         public async Task<CreateProductResponseModel> CreateProduct(CreateProductRequestModel productRequestModel)

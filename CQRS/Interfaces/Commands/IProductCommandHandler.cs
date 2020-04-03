@@ -4,7 +4,7 @@ using CQRS.Models.RequestModels.Commands;
 
 namespace CQRS.Interfaces.Commands
 {
-    public interface ICreateProductHandler
+    public interface IProductCommandHandler
     {
          Task<CreateProductResponseModel> CreateProduct(CreateProductRequestModel productRequestModel);
     }

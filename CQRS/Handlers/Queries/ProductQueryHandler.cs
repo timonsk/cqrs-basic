@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using CQRS.Interfaces.Queries;
 using CQRS.Interfaces.Storage;
@@ -7,13 +8,13 @@ using CQRS.Models.Stoarage;
 
 namespace CQRS.Handlers.Queries
 {
-    public class GetProductByIdHandler : IGetProductByIdHandler
+    public class ProductQueryHandler : IProductQueryHandler
     {
         private readonly IInMemoryStorage _inMemoryStorage;
 
-        public GetProductByIdHandler(IInMemoryStorage inMemoryStorage)
+        public ProductQueryHandler(IInMemoryStorage inMemoryStorage)
         {
-            _inMemoryStorage = inMemoryStorage;
+            _inMemoryStorage = inMemoryStorage != null ? inMemoryStorage : throw new ArgumentNullException(nameof(inMemoryStorage));
         }
 
         public async Task<GetProductByIdResponseModel> GetProductById(GetProductByIdRequestModel productModel)
