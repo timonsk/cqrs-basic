@@ -5,7 +5,7 @@ namespace CQRS.Models.ResponseModels.Queries
     public class GetProductByIdResponseModel
     {
         public Guid Id { get; set; }
-        
+
         public string Name { get; set; }
 
         public string Description { get; set; }

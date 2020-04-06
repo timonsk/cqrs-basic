@@ -6,10 +6,12 @@ namespace CQRS.Interfaces.Storage
 {
     public interface IInMemoryStorage
     {
-         Task Save<T>(T data, bool upsert);
+        Task Save<T>(T data, bool upsert);
 
-         Task<T> Get<T>(Guid id);
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "<Pending>")]
+        Task<T> Get<T>(Guid id);
 
-        Task<IList<T>> GetAll<T>() where T : class;
+        Task<IList<T>> GetAll<T>()
+            where T : class;
     }
 }

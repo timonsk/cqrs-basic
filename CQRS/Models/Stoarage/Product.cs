@@ -6,7 +6,7 @@ namespace CQRS.Models.Stoarage
     public class Product : IStorageObject
     {
         public Guid Id { get; set; }
-        
+
         public string Name { get; set; }
 
         public string Description { get; set; }

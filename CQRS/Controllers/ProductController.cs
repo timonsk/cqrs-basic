@@ -17,13 +17,12 @@ namespace CQRS.Controllers
     {
         private readonly ILogger<ProductController> _logger;
         private readonly IProductCommandHandler _productCommandHandler;
-        public readonly IProductQueryHandler _productQueryHandler;
+        private readonly IProductQueryHandler _productQueryHandler;
 
         public ProductController(
             ILogger<ProductController> logger,
             IProductCommandHandler productCommandHandler,
-            IProductQueryHandler productQueryHandler
-            )
+            IProductQueryHandler productQueryHandler)
         {
             _logger = logger;
             _productCommandHandler = productCommandHandler;

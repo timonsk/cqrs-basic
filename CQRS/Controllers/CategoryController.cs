@@ -22,8 +22,7 @@ namespace CQRS.Controllers
         public CategoryController(
             ILogger<ProductController> logger,
             ICategoryCommandHandler categoryCommandHandler,
-            ICategoryQueryHandler categoryQueryHandler
-            )
+            ICategoryQueryHandler categoryQueryHandler)
         {
             _logger = logger;
             _categoryCommandHandler = categoryCommandHandler;
@@ -31,7 +30,7 @@ namespace CQRS.Controllers
         }
 
         [HttpGet]
-        public Task<List<GetCategoryByNameResponseModel>> Get([FromQuery] string  categoryName)
+        public Task<List<GetCategoryByNameResponseModel>> Get([FromQuery] string categoryName)
         {
             _logger.LogDebug($"Got request for getting category by name: {categoryName}");
             return _categoryQueryHandler.GetCategoryByName(new GetCategoryByNameRequestModel { Name = categoryName });

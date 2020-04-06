@@ -1,6 +1,6 @@
-﻿using CQRS.Models.RequestModels.Commands;
+﻿using System.Threading.Tasks;
+using CQRS.Models.RequestModels.Commands;
 using CQRS.Models.ResponseModels.Commands;
-using System.Threading.Tasks;
 
 namespace CQRS.Interfaces.Commands
 {

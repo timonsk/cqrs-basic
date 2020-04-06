@@ -19,7 +19,12 @@ namespace CQRS.Handlers.Queries
 
         public async Task<GetProductByIdResponseModel> GetProductById(GetProductByIdRequestModel productModel)
         {
-            var product = await _inMemoryStorage.Get<Product>(productModel.ProductId);
+            if (productModel == null)
+            {
+                throw new ArgumentNullException(nameof(productModel));
+            }
+
+            var product = await _inMemoryStorage.Get<Product>(productModel.ProductId).ConfigureAwait(false);
 
             return new GetProductByIdResponseModel
             {
@@ -27,7 +32,7 @@ namespace CQRS.Handlers.Queries
                 CategoryId = product.CategoryId,
                 Description = product.Description,
                 Name = product.Name,
-                UserId = product.UserId
+                UserId = product.UserId,
             };
         }
     }
