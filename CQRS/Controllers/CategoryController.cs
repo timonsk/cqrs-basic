@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using CQRS.Interfaces.Commands;
 using CQRS.Interfaces.Queries;
@@ -30,17 +32,28 @@ namespace CQRS.Controllers
         }
 
         [HttpGet]
-        public Task<List<GetCategoryByNameResponseModel>> Get([FromQuery] string categoryName)
+        [ProducesResponseType(typeof(IList<GetCategoryByNameResponseModel>), (int)HttpStatusCode.OK)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        public async Task<IActionResult> Get([FromQuery] string categoryName)
         {
             _logger.LogDebug($"Got request for getting category by name: {categoryName}");
-            return _categoryQueryHandler.GetCategoryByName(new GetCategoryByNameRequestModel { Name = categoryName });
+            try
+            {
+                return Ok(await _categoryQueryHandler.GetCategoryByName(new GetCategoryByNameRequestModel { Name = categoryName })
+                    .ConfigureAwait(false));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
-        public Task<CreateCategoryResponseModel> Create([FromBody] CreateCategoryRequestModel categoryRequestModel)
+        [ProducesResponseType(typeof(CreateCategoryResponseModel), (int)HttpStatusCode.Created)]
+        public async Task<IActionResult> Create([FromBody] CreateCategoryRequestModel categoryRequestModel)
         {
             _logger.LogDebug($"Got request for creating category with name: {categoryRequestModel?.Name} and user id: {categoryRequestModel?.UserId}");
-            return _categoryCommandHandler.CreateCategory(categoryRequestModel);
+            return CreatedAtAction("Create", new { categoryName = categoryRequestModel.Name }, await _categoryCommandHandler.CreateCategory(categoryRequestModel).ConfigureAwait(false));
         }
     }
 }
