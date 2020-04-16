@@ -1,2 +1,2 @@
 # cqrs-basic
-Basic implementation of the CQRS dessign pattern
+Basic implementation of the CQRS design pattern
